@@ -1,0 +1,72 @@
+#Farihatu Sa'adah (2206776)
+
+import numpy as np #Baris ini mengimpor modul NumPy, yang digunakan untuk manipulasi matriks dan vektor secara efisien.
+
+def LU(A): #Fungsi LU akan menerima suatu matriks A dan mengembalikan dua matriks, yaitu matriks segitiga bawah (L) dan segitiga atas (U).
+    #Inisialisasi variabel n sebagai ukuran matriks A, dan inisialisasi matriks L dan U dengan matriks nol:
+    n = len(A)
+    L = np.zeros((n, n))
+    U = np.zeros((n, n))
+
+    #Menginisialisasi elemen diagonal matriks L dengan 1, karena matriks L adalah matriks identitas pada diagonal:
+    for i in range(n):
+        L[i][i] = 1
+
+        #Mengisi elemen matriks U dan L sesuai dengan proses faktorisasi LU. Pada baris ini, dilakukan iterasi untuk mengisi elemen-elemen di atas atau pada diagonal utama:
+        for j in range(i, n):
+            U[i][j] = A[i][j]
+            for k in range(i): # diulang sebanyak i kali
+                U[i][j] = U[i][j]-(L[i][k] * U[k][j])
+
+        #langkah serupa untuk elemen matriks L, yang mana dilakukan iterasi untuk mengisi elemen-elemen di bawah diagonal utama:
+        for j in range(i + 1, n):
+            L[j][i] = A[j][i]
+            for k in range(i):
+                L[j][i] -= L[j][k] * U[k][i]
+            L[j][i] /= U[i][i]
+       
+    return L, U #Mengembalikan matriks L dan U setelah proses faktorisasi LU selesai.
+
+def Ly(L,b): #Fungsi ini akan melakukan substitusi maju pada sistem persamaan linear Ly = b.
+    n=len(L)
+    y=np.zeros(n) #Inisialisasi vektor y dengan nol.
+    for i in range(n):
+      y[i]=b[i]
+      for j in range(i):
+        y[i]-= L[i][j]*y[j]
+
+    return y #Mengembalikan vektor y.
+
+
+def Ux(U,y): #Fungsi ini akan melakukan substitusi mundur pada sistem persamaan linear Ux = y.
+  n=len(U)
+  x=np.zeros(n) #Inisialisasi vektor x dengan nol.
+  for i in range(n-1,-1,-1):
+    x[i]=y[i]
+    for k in range(i+1,n):
+       x[i]-=U[i][k]*x[k]
+    x[i]/=U[i][i]
+
+  return x #Mengembalikan vektor x.
+
+#Matriks A dan vektor b
+A = np.array([[1., 2.],
+              [3., 5.]])
+b = np.array([3., 16.])
+
+#Menghitung faktorisasi LU
+L, U = LU(A)
+
+#Menampilkan matriks L dan U
+print("Matrix L:")
+print(L)
+print("Matrix U:")
+print(U)
+
+y=Ly(L,b) #Menghitung vektor y dari Ly = b
+print("Matrix y:")
+print(y)
+
+x=Ux(U,y) #Menghitung vektor solusi x dari Ux = y
+print("Matriks x:")
+print(x)
