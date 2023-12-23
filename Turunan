@@ -1,5 +1,3 @@
-#Farihatu Sa'adah(2206776)
-
 import numpy as np # Import modul NumPy untuk manipulasi matriks dan vektor secara efisien.
 
 # Fungsi untuk menghitung turunan maju suatu fungsi pada suatu titik x dengan langkah h:
