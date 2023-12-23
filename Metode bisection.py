@@ -1,5 +1,3 @@
-#Farihatu Sa'adah (2206776)
-
 import numpy as np #Import modul NumPy untuk manipulasi matriks dan vektor secara efisien.
 import sympy as sp #Import modul SymPy untuk manipulasi ekspresi matematika simbolis.
 import matplotlib.pyplot as plt # Import modul matplotlib untuk membuat plot.
