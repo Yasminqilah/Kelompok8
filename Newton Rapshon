@@ -1,11 +1,10 @@
-import sympy as sp #Import modul SymPy untuk manipulasi ekspresi matematika simbolis.
-import numpy as np #Import modul NumPy untuk manipulasi matriks dan vektor secara efisien.
-import matplotlib.pyplot as plt #Import modul matplotlib untuk membuat plot.
+import sympy as sp 
+import numpy as np 
+import matplotlib.pyplot as plt
 
-# Mendefinisikan fungsi metode newtonRaphson
 def newtonRaphson(x0,e,N,f,g):
-    nilai_x = [x0]  # Menyimpan nilai-nilai x pada setiap iterasi
-    nilai_y = [f(x0)]  # Menyimpan nilai-nilai y pada setiap iterasi
+    nilai_x = [x0] 
+    nilai_y = [f(x0)] 
     step = 1
     flag = 1
     condition = True
@@ -33,14 +32,12 @@ def newtonRaphson(x0,e,N,f,g):
         print('\ntidak konvergen')
     return nilai_x,nilai_y
 
-# convert inputan ke tipe data float
 f = input('Fungsi:');
 x0 = input('Perkiraan: ')
 x0 = float(x0)
 e = input('Perkiraan Error: ')
 e = float(e)
 
-# convert inputan ke tipe data int
 N = input('Jumlah Step: ')
 N = int(N)
 
@@ -52,15 +49,12 @@ f_prime = sp.lambdify(x, f_prime)
 
 nilai_x,nilai_y=newtonRaphson(x0,e,N,f,f_prime)
 
-# Membuat plot fungsi
 x_range = np.linspace(min(nilai_x) - 1, max(nilai_x) + 1, 1000)
 y_range = f(x_range)
 plt.plot(x_range, y_range, label='Fungsi')
 
-# Menandai titik-titik iterasi
 plt.scatter(nilai_x, nilai_y, color='red', marker='o', label='Iterasi')
 
-# Menambahkan garis singgung pada setiap iterasi
 for i in range(len(nilai_x)):
     garis_singgung = f_prime(nilai_x[i]) * (x_range - nilai_x[i]) + nilai_y[i]
     plt.plot(x_range, garis_singgung, linestyle='--', label=f'garis Singgung {i+1}')
