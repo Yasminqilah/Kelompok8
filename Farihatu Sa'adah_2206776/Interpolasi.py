@@ -1,0 +1,51 @@
+# Import library yang dibutuhkan
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Mengatur gaya plot menggunakan 'seaborn'
+plt.style.use('seaborn')
+
+# Fungsi untuk menghitung tabel perbedaan terbagi
+def divided_diff(x, y):
+    n = len(y)
+    coef = np.zeros([n, n])
+    coef[:,0] = y
+    
+    for j in range(1, n):
+        for i in range(n-j):
+            # Menghitung perbedaan terbagi menggunakan rumus Newton
+            coef[i][j] = (coef[i+1][j-1] - coef[i][j-1]) / (x[i+j] - x[i])
+            
+    return coef
+
+# Fungsi untuk mengevaluasi polinom Newton pada suatu titik x
+def newton_poly(coef, x_data, x):
+    n = len(x_data) - 1 
+    p = coef[n]
+    for k in range(1, n+1):
+        # Menggunakan rumus polinom Newton
+        p = coef[n-k] + (x - x_data[n-k]) * p
+    return p
+
+# Data titik-titik yang akan diinterpolasi
+x = np.array([-5, -1, 0, 2])
+y = np.array([-2, 6, 1, 3])
+
+# Menghitung koefisien perbedaan terbagi
+a_s = divided_diff(x, y)[0, :]
+
+# Membuat array titik x baru untuk evaluasi polinom Newton
+x_new = np.arange(-5, 2.1, 0.1)
+
+# Menghitung nilai polinom Newton pada titik-titik x baru
+y_new = newton_poly(a_s, x, x_new)
+
+# Plot hasil interpolasi Newton dan titik data
+plt.figure(figsize=(12, 8))
+plt.plot(x, y, 'bo', label='Titik Data')
+plt.plot(x_new, y_new, label='Interpolasi Newton')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.title('Interpolasi Newton')
+plt.legend()
+plt.show()
