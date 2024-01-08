@@ -1,0 +1,67 @@
+import sympy as sp 
+import numpy as np 
+import matplotlib.pyplot as plt
+
+def newtonRaphson(x0,e,N,f,g):
+    nilai_x = [x0] 
+    nilai_y = [f(x0)] 
+    step = 1
+    flag = 1
+    condition = True
+    while condition:
+        if g(x0) == 0.0:
+            print('dibagi 0 error')
+            break
+        #loop iterasi
+        x1 = x0 - f(x0)/g(x0)
+        nilai_x.append(x1)
+        nilai_y.append(f(x1))
+        print('Iterasi-%d, x1 = %0.6f dan f(x1) = %0.6f' % (step, x1, f(x1)))
+        x0 = x1
+        step = step + 1
+
+        if step > N:
+            flag = 0
+            break
+
+        condition = abs(f(x1)) > e
+
+    if flag==1:
+        print('\nakar yang dibutuhkan : %0.8f' % x1)
+    else:
+        print('\ntidak konvergen')
+    return nilai_x,nilai_y
+
+f = input('Fungsi:');
+x0 = input('Perkiraan: ')
+x0 = float(x0)
+e = input('Perkiraan Error: ')
+e = float(e)
+
+N = input('Jumlah Step: ')
+N = int(N)
+
+x = sp.symbols('x')
+f = sp.sympify(f)
+f_prime = sp.diff(f, x)
+f = sp.lambdify(x, f)
+f_prime = sp.lambdify(x, f_prime)
+
+nilai_x,nilai_y=newtonRaphson(x0,e,N,f,f_prime)
+
+x_range = np.linspace(min(nilai_x) - 1, max(nilai_x) + 1, 1000)
+y_range = f(x_range)
+plt.plot(x_range, y_range, label='Fungsi')
+
+plt.scatter(nilai_x, nilai_y, color='red', marker='o', label='Iterasi')
+
+for i in range(len(nilai_x)):
+    garis_singgung = f_prime(nilai_x[i]) * (x_range - nilai_x[i]) + nilai_y[i]
+    plt.plot(x_range, garis_singgung, linestyle='--', label=f'garis Singgung {i+1}')
+
+plt.xlabel('x')
+plt.ylabel('f(x)')
+plt.title('Metode Newton-Raphson dengan Garis Singgung')
+plt.legend()
+plt.grid(True)
+plt.show()
