@@ -1,6 +1,7 @@
 import numpy as np
 import sympy as sp
 
+#Mencari solusi integral dengan metode newton menggunakan metode trapesium
 def trapesium(a, b, h, f):
     n = int((b - a) / h)
     nilai_x = []
@@ -15,6 +16,7 @@ def trapesium(a, b, h, f):
 
     return jumlah * h/2
 
+#Mencari solusi integral dengan metode newton menggunakan metode persegi panjang
 def pias(a, b, h, f):
     n = int((b - a) / h)
     nilai_x = []
@@ -31,6 +33,7 @@ def pias(a, b, h, f):
 
     return jumlah*h
 
+#Mencari solusi integral dengan metode newton menggunakan simpson
 def simpson(a, b, h, f):
     n = int((b - a) / h)
     nilai_x = [] 
@@ -50,7 +53,7 @@ def simpson(a, b, h, f):
     else:
       return "tidak bisa menggunakan metode simpson 1/3 karena partisi berjumlah ganjil"
 
-
+#input
 a = input("masukkan nilai a: ")
 a = float(a)
 b = input("masukkan nilai b: ")
@@ -58,14 +61,16 @@ b = float(b)
 h = input("masukkan nilai h: ")
 h = float(h)
 fungsi = input("masukkan fungsi: ")
-
 x = sp.symbols('x')
 f = sp.sympify(fungsi)
 f = sp.lambdify(x, f) 
 
+#pangggil fungsi
 hasil_integral1 = trapesium(a, b, h, f)
 hasil_integral2 = pias(a,b,h,f)
 hasil_integral3 = simpson(a, b, h, f)
+
+#output
 print("Hasil integral dengan metode trapesium:", hasil_integral1)
 print("Hasil integral dengan metode pias(titik tengah):", hasil_integral2)
 print("Hasil integral dengan metode simpson 1/3:", hasil_integral3)
