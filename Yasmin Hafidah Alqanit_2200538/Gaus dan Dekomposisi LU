@@ -1,5 +1,6 @@
 import numpy as np 
 
+#Menjalankan fungsi A = L. U untuk mendapatkan nilai matriks L dan matriks U
 def LU(A): 
     n = len(A)
     L = np.zeros((n, n))
@@ -19,6 +20,8 @@ def LU(A):
             L[j][i] /= U[i][i]
        
     return L, U 
+
+#Menjalankan fungsi b = L. y untuk mendapatkan nilai matriks y
 def Ly(L,b): 
     n=len(L)
     y=np.zeros(n) 
@@ -29,7 +32,7 @@ def Ly(L,b):
 
     return y 
 
-
+#Menjalankan fungsi Ux = y untuk mencari nilai matriks x
 def Ux(U,y): 
   n=len(U)
   x=np.zeros(n) 
@@ -41,12 +44,15 @@ def Ux(U,y):
 
   return x 
 
+
+#input
 A = np.array([[1., 2.],
               [3., 5.]])
 b = np.array([3., 16.])
 
 L, U = LU(A)
 
+#output
 print("Matrix L:")
 print(L)
 print("Matrix U:")
